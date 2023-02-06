@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.gamescore.R
 import com.example.gamescore.databinding.FragmentChooseLevelBinding
+import com.example.gamescore.domain.entity.Level
 
 class ChooseLevelFragment : Fragment() {
 
@@ -22,6 +23,33 @@ class ChooseLevelFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.buttonLevelEasy.setOnClickListener {
+            launchGameFragment(Level.EASY)
+        }
+        binding.buttonLevelNormal.setOnClickListener {
+            launchGameFragment(Level.NORMAL)
+        }
+        binding.buttonLevelHard.setOnClickListener {
+            launchGameFragment(Level.HARD)
+        }
+    }
+
+    private fun launchGameFragment(level: Level) {
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.main_container, GameFragment.newInstance(level))
+            .addToBackStack(null).commit()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     companion object {
+        fun newInstance(): ChooseLevelFragment {
+            return ChooseLevelFragment()
+        }
     }
 }
